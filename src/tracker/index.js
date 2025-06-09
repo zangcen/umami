@@ -137,6 +137,32 @@
     (domain && !domains.includes(hostname)) ||
     (dnt && hasDoNotTrack());
 
+  // 取客户端IP地址
+  const getClientIp = async () => {
+    if (window.clientIp && typeof window.clientIp === 'object' && window.clientIp.ip) {
+      return window.clientIp;
+    }
+    // 请求服务端获取IP地址
+    const { ip, countryCode, regionCode, city } = await fetch('https://ip-api.io/json', {
+      method: 'GET',
+      timeout: 1000,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(response => {
+      if (!response.ok) throw new Error('Failed to fetch IP address');
+      return response.json();
+    });
+
+    window.clientIp = {
+      'cf-ip': ip || '',
+      'cf-ipcountry': countryCode || '',
+      'cf-region-code': regionCode || '',
+      'cf-ipcity': city || '',
+    };
+    return window.clientIp;
+  };
+
   const send = async (payload, type = 'event') => {
     if (trackingDisabled()) return;
 
@@ -148,6 +174,8 @@
 
     if (!payload) return;
 
+    const clientIp = await getClientIp();
+
     try {
       const res = await fetch(endpoint, {
         method: 'POST',
@@ -155,6 +183,7 @@
         headers: {
           'Content-Type': 'application/json',
           ...(typeof cache !== 'undefined' && { 'x-umami-cache': cache }),
+          ...clientIp,
         },
         credentials: 'omit',
       });
