@@ -9,7 +9,9 @@
     doNotTrack,
   } = window;
   const { currentScript, referrer } = document;
-  if (!currentScript) return;
+  if (!currentScript) {
+    return;
+  }
 
   const { hostname, href, origin } = location;
   const localStorage = href.startsWith('data:') ? undefined : window.localStorage;
@@ -58,13 +60,19 @@
   /* Event handlers */
 
   const handlePush = (_state, _title, url) => {
-    if (!url) return;
+    if (!url) {
+      return;
+    }
 
     currentRef = currentUrl;
     currentUrl = new URL(url, location.href);
 
-    if (excludeSearch) currentUrl.search = '';
-    if (excludeHash) currentUrl.hash = '';
+    if (excludeSearch) {
+      currentUrl.search = '';
+    }
+    if (excludeHash) {
+      currentUrl.hash = '';
+    }
     currentUrl = currentUrl.toString();
 
     if (currentUrl !== currentRef) {
@@ -93,7 +101,9 @@
 
         el.getAttributeNames().forEach(name => {
           const match = name.match(eventRegex);
-          if (match) eventData[match[1]] = el.getAttribute(name);
+          if (match) {
+            eventData[match[1]] = el.getAttribute(name);
+          }
         });
 
         return track(eventName, eventData);
@@ -102,10 +112,14 @@
     const onClick = async e => {
       const el = e.target;
       const parentElement = el.closest('a,button');
-      if (!parentElement) return trackElement(el);
+      if (!parentElement) {
+        return trackElement(el);
+      }
 
       const { href, target } = parentElement;
-      if (!parentElement.getAttribute(eventNameAttribute)) return;
+      if (!parentElement.getAttribute(eventNameAttribute)) {
+        return;
+      }
 
       if (parentElement.tagName === 'BUTTON') {
         return trackElement(parentElement);
@@ -117,7 +131,9 @@
           e.shiftKey ||
           e.metaKey ||
           (e.button && e.button === 1);
-        if (!external) e.preventDefault();
+        if (!external) {
+          e.preventDefault();
+        }
         return trackElement(parentElement).then(() => {
           if (!external) {
             (target === '_top' ? top.location : location).href = href;
@@ -139,32 +155,50 @@
 
   // 取客户端IP地址
   const getClientIp = async () => {
-    if (window.clientIp && typeof window.clientIp === 'object' && window.clientIp.ip) {
+    if (window.clientIp && typeof window.clientIp === 'object' && window.clientIp['cf-ip']) {
       return window.clientIp;
     }
     // 请求服务端获取IP地址
-    const { ip, countryCode, regionCode, city } = await fetch('https://ip-api.io/json', {
-      method: 'GET',
-      timeout: 1000,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then(response => {
-      if (!response.ok) throw new Error('Failed to fetch IP address');
-      return response.json();
-    });
-
-    window.clientIp = {
-      'cf-ip': ip || '',
-      'cf-ipcountry': countryCode || '',
-      'cf-region-code': regionCode || '',
-      'cf-ipcity': city || '',
-    };
+    try {
+      let { ip, countryCode, countryName, regionCode, city } = await fetch(
+        'https://ip-api.io/json',
+        {
+          method: 'GET',
+          timeout: 1000,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      ).then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch IP address');
+        }
+        return response.json();
+      });
+      if (!ip || !countryCode) {
+        throw new Error('IP info incomplete');
+      }
+      if (['HK', 'TW', 'MO'].includes(countryCode)) {
+        regionCode = countryCode;
+        countryCode = 'CN'; // 将港澳台地区的国家代码统一为CN
+        city = countryName;
+      }
+      window.clientIp = {
+        'cf-ip': ip,
+        'cf-ipcountry': countryCode,
+        'cf-region-code': regionCode,
+        'cf-ipcity': city,
+      };
+    } catch (e) {
+      window.clientIp = {};
+    }
     return window.clientIp;
   };
 
   const send = async (payload, type = 'event') => {
-    if (trackingDisabled()) return;
+    if (trackingDisabled()) {
+      return;
+    }
 
     const callback = window[beforeSend];
 
@@ -172,7 +206,9 @@
       payload = callback(type, payload);
     }
 
-    if (!payload) return;
+    if (!payload) {
+      return;
+    }
 
     const clientIp = await getClientIp();
 
@@ -208,9 +244,15 @@
   };
 
   const track = (name, data) => {
-    if (typeof name === 'string') return send({ ...getPayload(), name, data });
-    if (typeof name === 'object') return send({ ...name });
-    if (typeof name === 'function') return send(name(getPayload()));
+    if (typeof name === 'string') {
+      return send({ ...getPayload(), name, data });
+    }
+    if (typeof name === 'object') {
+      return send({ ...name });
+    }
+    if (typeof name === 'function') {
+      return send(name(getPayload()));
+    }
     return send(getPayload());
   };
 
