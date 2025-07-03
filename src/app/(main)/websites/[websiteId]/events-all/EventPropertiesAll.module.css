@@ -1,0 +1,185 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 60px;
+  margin-bottom: 40px;
+}
+
+.table {
+  align-self: flex-start;
+}
+
+.table :global(.react-basics-GridTable-row) {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.table :global(.react-basics-GridTable-row:hover) {
+  background-color: var(--base100);
+}
+
+.table :global(.react-basics-GridTable-row.selected) {
+  background-color: var(--primary-light);
+}
+
+.link {
+  color: var(--primary);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.link:hover {
+  cursor: pointer;
+  color: var(--primary400);
+}
+
+.selected {
+  background: var(--primary);
+  color: white;
+  font-weight: 500;
+}
+
+.selected:hover {
+  background: var(--primary-dark);
+  color: white;
+}
+
+.valuesContainer {
+  min-height: 620px;
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--base300);
+  border-radius: 8px;
+  padding: 1rem;
+  background: var(--base50);
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--base800);
+  border-bottom: 1px solid var(--base200);
+  padding-bottom: 0.5rem;
+}
+
+.valuesList {
+  max-height: 500px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.valueItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: var(--base0);
+  border: 1px solid var(--base200);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.valueItem:hover {
+  background: var(--base100);
+  border-color: var(--base300);
+}
+
+.valueLabel {
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--base700);
+  word-break: break-word;
+  margin-right: 1rem;
+}
+
+.valueCount {
+  font-weight: 600;
+  background: var(--primary);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  min-width: 2rem;
+  text-align: center;
+}
+
+.loadMoreContainer {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0;
+  margin-top: 1rem;
+  border-top: 1px solid var(--base200);
+}
+
+.noMoreData {
+  text-align: center;
+  color: var(--base500);
+  font-size: 0.9rem;
+  padding: 1rem 0;
+  font-style: italic;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: var(--base500);
+  gap: 1rem;
+}
+
+.loadingText {
+  font-size: 0.9rem;
+  color: var(--base500);
+}
+
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .valuesContainer {
+    order: -1;
+  }
+
+  .valuesList {
+    max-height: 300px;
+  }
+
+  .emptyState {
+    margin-left: 0;
+    margin-top: 1rem;
+  }
+
+  .table {
+    font-size: 0.9rem;
+  }
+
+  .link {
+    padding: 0.25rem;
+  }
+}
+
+.emptyState {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: var(--base50);
+  border-radius: 8px;
+  margin-left: 1rem;
+}
+
+.emptyStateText {
+  color: var(--base500);
+  font-size: 1rem;
+  text-align: center;
+}

@@ -689,6 +689,18 @@
       "value": "少于等于"
     }
   ],
+  "label.load-more": [
+    {
+      "type": 0,
+      "value": "加载更多"
+    }
+  ],
+  "label.loading": [
+    {
+      "type": 0,
+      "value": "加载中..."
+    }
+  ],
   "label.login": [
     {
       "type": 0,
@@ -771,6 +783,12 @@
     {
       "type": 0,
       "value": "新密码"
+    }
+  ],
+  "label.no-more-data": [
+    {
+      "type": 0,
+      "value": "没有更多数据了"
     }
   ],
   "label.none": [
@@ -1111,6 +1129,12 @@
     {
       "type": 0,
       "value": "选择日期"
+    }
+  ],
+  "label.select-event-property": [
+    {
+      "type": 0,
+      "value": "请选择一个事件属性来查看详细数据"
     }
   ],
   "label.select-role": [

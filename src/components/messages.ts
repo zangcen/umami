@@ -83,6 +83,12 @@ export const labels = defineMessages({
   logout: { id: 'label.logout', defaultMessage: 'Logout' },
   singleDay: { id: 'label.single-day', defaultMessage: 'Single day' },
   dateRange: { id: 'label.date-range', defaultMessage: 'Date range' },
+  loadMore: { id: 'label.load-more', defaultMessage: 'Load more' },
+  noMoreData: { id: 'label.no-more-data', defaultMessage: 'No more data' },
+  selectEventProperty: {
+    id: 'label.select-event-property',
+    defaultMessage: 'Select event property',
+  },
   viewDetails: { id: 'label.view-details', defaultMessage: 'View details' },
   deleteTeam: { id: 'label.delete-team', defaultMessage: 'Delete team' },
   leaveTeam: { id: 'label.leave-team', defaultMessage: 'Leave team' },

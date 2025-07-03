@@ -2,6 +2,7 @@ export * from './queries/useConfig';
 export * from './queries/useEventDataEvents';
 export * from './queries/useEventDataProperties';
 export * from './queries/useEventDataValues';
+export * from './useEventDataValuesPaged';
 export * from './queries/useLogin';
 export * from './queries/useRealtime';
 export * from './queries/useReport';
